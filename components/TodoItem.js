@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, CheckBox } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import CheckBox from 'react-native-community-checkbox';
 
 const styles = StyleSheet.create({
   todoItem: {
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 const getPriorityColor = (priority) => {
   switch (priority) {
     case 'High':
@@ -104,15 +106,18 @@ const getPriorityColor = (priority) => {
 export default function TodoItem({ task, deleteTask, toggleCompleted, toggleEdit, saveTask }) {
   const [editText, setEditText] = useState(task.text);
   const [editPriority, setPriority] = useState(task.priority);
+  const [isChecked, setChecked] = useState(false);
 
   return (
     <View style={[styles.todoItem, { backgroundColor: getPriorityColor(editPriority) }]}>
       <View style={styles.checkboxContainer}>
-        <CheckBox
+      <CheckBox isChecked={task.completed} 
+          setChecked={() => toggleCompleted(task.id)}/>
+        {/* <CheckBox
           value={task.completed}
           onValueChange={() => toggleCompleted(task.id)}
           trackColor={{ true: '#4CAF50', false: '#ccc' }}
-        />
+        /> */}
       </View>
 
       {task.isEditing ? (
