@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import TodoItem from "./TodoItem";
 
@@ -13,6 +14,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#f7f7f7",
+    margin: 0,
+    padding: 0,
   },
   inputContainer: {
     flexDirection: "row",
@@ -69,7 +72,11 @@ const styles = StyleSheet.create({
   prioritySelector: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 20,
+    marginTop: 5,
+    borderWidth: 2,
+    borderColor: "red",
+    padding: 2,
+    borderRadius: 8,
   },
   priorityButton: {
     padding: 10,
@@ -144,50 +151,22 @@ export default function TodoList() {
     );
   }
 
-  function filterTasks() {
-    if (filter === "completed") {
-      return tasks.filter((task) => task.completed);
-    } else if (filter === "active") {
-      return tasks.filter((task) => !task.completed);
-    } else {
-      return tasks;
-    }
+  function getSortedTasks() {
+    const filteredTasks =
+      filter === "all"
+        ? tasks
+        : tasks.filter((task) =>
+            filter === "completed" ? task.completed : !task.completed
+          );
+
+    return filteredTasks.sort((a, b) => {
+      const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    });
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.prioritySelector}>
-        <TouchableOpacity onPress={() => setPriority("High")}>
-          <Text
-            style={[
-              styles.priorityButton,
-              priority === "High" && styles.priorityButtonActive,
-            ]}
-          >
-            High
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setPriority("Medium")}>
-          <Text
-            style={[
-              styles.priorityButton,
-              priority === "Medium" && styles.priorityButtonActive,
-            ]}
-          >
-            Medium
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setPriority("Low")}>
-          <Text
-            style={[
-              styles.priorityButton,
-              priority === "Low" && styles.priorityButtonActive,
-            ]}
-          >
-            Low
-          </Text>
-        </TouchableOpacity>
-      </View>
       <View style={styles.filterContainer}>
         <TouchableOpacity
           style={[
@@ -218,28 +197,67 @@ export default function TodoList() {
         </TouchableOpacity>
       </View>
 
-      {filterTasks().map((task) => (
-        <TodoItem
-          key={task.id}
-          task={task}
-          deleteTask={deleteTask}
-          toggleCompleted={toggleCompleted}
-          toggleEdit={toggleEdit}
-          saveTask={saveTask}
-        />
-      ))}
+      <ScrollView style={styles.scrollView}>
+        {getSortedTasks().map((task) => (
+          <TodoItem
+            key={task.id}
+            task={task}
+            deleteTask={deleteTask}
+            toggleCompleted={toggleCompleted}
+            toggleEdit={toggleEdit}
+            saveTask={saveTask}
+          />
+        ))}
+      </ScrollView>
+      <View>
+        <View style={styles.prioritySelector}>
+          <View style={{ left: 10, bottom: -10 }}>
+            <Text style={{ fontWeight: "bold" }}>Select priority :- </Text>
+          </View>
+          <TouchableOpacity onPress={() => setPriority("High")}>
+            <Text
+              style={[
+                styles.priorityButton,
+                priority === "High" && styles.priorityButtonActive,
+              ]}
+            >
+              High
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriority("Medium")}>
+            <Text
+              style={[
+                styles.priorityButton,
+                priority === "Medium" && styles.priorityButtonActive,
+              ]}
+            >
+              Medium
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setPriority("Low")}>
+            <Text
+              style={[
+                styles.priorityButton,
+                priority === "Low" && styles.priorityButtonActive,
+              ]}
+            >
+              Low
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          value={text}
-          onChangeText={setText}
-          placeholder="New Task"
-          placeholderTextColor="#999"
-        />
-        <TouchableOpacity style={styles.addButton} onPress={addTask}>
-          <Text style={styles.addButtonText}>Add</Text>
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            value={text}
+            onChangeText={setText}
+            placeholder="New Task"
+            placeholderTextColor="#999"
+          />
+          <TouchableOpacity style={styles.addButton} onPress={addTask}>
+            <Text style={styles.addButtonText}>Add</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

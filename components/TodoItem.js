@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import CheckBox from 'react-native-community-checkbox';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import CheckBox from "react-native-community-checkbox";
 
 const styles = StyleSheet.create({
   todoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 12,
     paddingHorizontal: 18,
     marginVertical: 8,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
-    shadowColor: '#000',
+    borderColor: "#ccc",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 3,
@@ -25,99 +31,106 @@ const styles = StyleSheet.create({
   todoItemText: {
     flex: 1,
     fontSize: 18,
-    color: '#333',
+    color: "#333",
   },
   completed: {
-    textDecorationLine: 'line-through',
-    color: '#bbb',
+    textDecorationLine: "line-through",
+    color: "#bbb",
   },
   deleteButton: {
-    backgroundColor: '#FF6347',
+    backgroundColor: "#FF6347",
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
     marginLeft: 10,
   },
   deleteButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
   },
   editButton: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: "#1E90FF",
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
     marginRight: 10,
   },
   editButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
   },
   saveButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
   },
   saveButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
   },
   editInput: {
     flex: 1,
     fontSize: 18,
     padding: 10,
-    color: '#333',
+    color: "#333",
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   prioritySelector: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 5,
   },
   priorityButton: {
     padding: 8,
     borderRadius: 8,
-    backgroundColor: '#e0f7fa',
+    backgroundColor: "#e0f7fa",
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   priorityButtonActive: {
-    backgroundColor: '#4CAF50',
-    color: '#fff',
+    backgroundColor: "#4CAF50",
+    color: "#fff",
   },
 });
 
-
 const getPriorityColor = (priority) => {
   switch (priority) {
-    case 'High':
-      return '#ea9e06'; // Orange
-    case 'Medium':
-      return '#e8b336'; // Yellow
-    case 'Low':
-      return '#ebeb61'; // Light Yellow
+    case "High":
+      return "#ea9e06"; // Orange
+    case "Medium":
+      return "#e8b336"; // Yellow
+    case "Low":
+      return "#ebeb61"; // Light Yellow
     default:
-      return '#ffffff'; // Default White
+      return "#ffffff"; // Default White
   }
 };
 
-export default function TodoItem({ task, deleteTask, toggleCompleted, toggleEdit, saveTask }) {
+export default function TodoItem({
+  task,
+  deleteTask,
+  toggleCompleted,
+  toggleEdit,
+  saveTask,
+}) {
   const [editText, setEditText] = useState(task.text);
   const [editPriority, setPriority] = useState(task.priority);
   const [isChecked, setChecked] = useState(false);
 
   return (
-    <View style={[styles.todoItem, { backgroundColor: getPriorityColor(editPriority) }]}>
+    <View
+      style={[
+        styles.todoItem,
+        { backgroundColor: getPriorityColor(editPriority) },
+      ]}
+    >
       <View style={styles.checkboxContainer}>
-      <CheckBox isChecked={task.completed} 
-          setChecked={() => toggleCompleted(task.id)}/>
-        {/* <CheckBox
-          value={task.completed}
-          onValueChange={() => toggleCompleted(task.id)}
-          trackColor={{ true: '#4CAF50', false: '#ccc' }}
-        /> */}
+        <CheckBox
+          isChecked={task.completed}
+          setChecked={() => toggleCompleted(task.id)}
+        />
       </View>
 
       {task.isEditing ? (
@@ -128,18 +141,33 @@ export default function TodoItem({ task, deleteTask, toggleCompleted, toggleEdit
             onChangeText={setEditText}
           />
           <View style={styles.prioritySelector}>
-            <TouchableOpacity onPress={() => setPriority('High')}>
-              <Text style={[styles.priorityButton, editPriority === 'High' && styles.priorityButtonActive]}>
+            <TouchableOpacity onPress={() => setPriority("High")}>
+              <Text
+                style={[
+                  styles.priorityButton,
+                  editPriority === "High" && styles.priorityButtonActive,
+                ]}
+              >
                 High
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setPriority('Medium')}>
-              <Text style={[styles.priorityButton, editPriority === 'Medium' && styles.priorityButtonActive]}>
+            <TouchableOpacity onPress={() => setPriority("Medium")}>
+              <Text
+                style={[
+                  styles.priorityButton,
+                  editPriority === "Medium" && styles.priorityButtonActive,
+                ]}
+              >
                 Medium
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setPriority('Low')}>
-              <Text style={[styles.priorityButton, editPriority === 'Low' && styles.priorityButtonActive]}>
+            <TouchableOpacity onPress={() => setPriority("Low")}>
+              <Text
+                style={[
+                  styles.priorityButton,
+                  editPriority === "Low" && styles.priorityButtonActive,
+                ]}
+              >
                 Low
               </Text>
             </TouchableOpacity>
