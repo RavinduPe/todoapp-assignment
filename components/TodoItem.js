@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 18,
-    marginVertical: 8,
+    marginVertical: 4,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -100,7 +100,7 @@ const getPriorityColor = (priority) => {
     case "High":
       return "#ea9e06"; // Orange
     case "Medium":
-      return "#e8b336"; // Yellow
+      return "#e3b667"; // Yellow
     case "Low":
       return "#ebeb61"; // Light Yellow
     default:
@@ -174,7 +174,13 @@ export default function TodoItem({
           </View>
         </View>
       ) : (
-        <Text style={[styles.todoItemText, task.completed && styles.completed]}>
+        <Text
+          style={[
+            styles.todoItemText,
+            task.completed && styles.completed,
+            { fontWeight: "500" },
+          ]}
+        >
           {task.text}
         </Text>
       )}
